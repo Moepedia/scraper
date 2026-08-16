@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Scraper Full - Extract All Data</title>
+    <title>Web Scraper Pro - Extract All Data</title>
     <style>
         * {
             margin: 0;
@@ -38,6 +38,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
         }
 
         h1 span {
@@ -113,6 +114,627 @@
         .btn-danger {
             background: #e74c3c;
         }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219a52;
+        }
+
+        .btn-info {
+            background: #3498db;
+        }
+
+        .btn-info:hover {
+            background: #2980b9;
+        }
+
+        .btn-warning {
+            background: #f39c12;
+        }
+
+        .btn-warning:hover {
+            background: #e67e22;
+        }
+
+        .btn-purple {
+            background: #8e44ad;
+        }
+
+        .btn-purple:hover {
+            background: #7d3c98;
+        }
+
+        .btn-sm {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 12px;
+            margin: 15px 0;
+            padding: 15px;
+            background: #0a0a1a;
+            border-radius: 10px;
+            border: 1px solid #2a2a5e;
+        }
+
+        .options-grid label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: #bbb;
+            font-size: 14px;
+        }
+
+        .options-grid input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: #e94560;
+            cursor: pointer;
+        }
+
+        .status {
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            display: none;
+            font-weight: 500;
+        }
+
+        .status.info {
+            display: block;
+            background: #1a2a4a;
+            color: #6fc3df;
+            border-left: 4px solid #3498db;
+        }
+
+        .status.success {
+            display: block;
+            background: #1a3a2a;
+            color: #6fdf8f;
+            border-left: 4px solid #27ae60;
+        }
+
+        .status.error {
+            display: block;
+            background: #3a1a1a;
+            color: #df6f6f;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .progress-container {
+            margin: 15px 0;
+            display: none;
+        }
+
+        .progress-container.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #2a2a5e;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #e94560, #8e44ad);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 4px;
+        }
+
+        .progress-text {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+            text-align: right;
+        }
+
+        .results {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .results.active {
+            display: block;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: #16213e;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #2a2a5e;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .stat-card:hover {
+            border-color: #e94560;
+            transform: translateY(-2px);
+        }
+
+        .stat-card .number {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e94560;
+        }
+
+        .stat-card .label {
+            color: #888;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #2a2a5e;
+            margin-bottom: 20px;
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            color: #fff;
+        }
+
+        .tab.active {
+            color: #e94560;
+            border-bottom-color: #e94560;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 15px 0;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 15px;
+        }
+
+        .file-card {
+            background: #16213e;
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #2a2a5e;
+            transition: all 0.3s;
+        }
+
+        .file-card:hover {
+            border-color: #e94560;
+            transform: translateY(-2px);
+        }
+
+        .file-card .file-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-card .file-icon {
+            font-size: 28px;
+        }
+
+        .file-card .file-name {
+            font-weight: 600;
+            color: #fff;
+            word-break: break-all;
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .file-card .file-size {
+            color: #888;
+            font-size: 12px;
+            background: #2a2a5e;
+            padding: 2px 10px;
+            border-radius: 10px;
+        }
+
+        .file-card .file-url {
+            font-size: 12px;
+            color: #6fc3df;
+            word-break: break-all;
+            margin: 8px 0;
+        }
+
+        .file-card .file-url a {
+            color: #6fc3df;
+            text-decoration: none;
+        }
+
+        .file-card .file-url a:hover {
+            text-decoration: underline;
+        }
+
+        .file-card .file-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .file-card .file-actions .btn {
+            flex: 1;
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 12px;
+            min-width: 60px;
+        }
+
+        .file-card .code-preview {
+            display: none;
+            margin-top: 12px;
+            background: #0a0a1a;
+            border-radius: 8px;
+            padding: 12px;
+            position: relative;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .file-card .code-preview.active {
+            display: block;
+        }
+
+        .file-card .code-preview pre {
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin: 0;
+        }
+
+        .file-card .code-preview .copy-btn {
+            position: sticky;
+            top: 0;
+            float: right;
+            background: #e94560;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        .file-card .code-preview .copy-btn:hover {
+            background: #c23152;
+        }
+
+        .link-item {
+            background: #16213e;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid #2a2a5e;
+            transition: all 0.3s;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .link-item:hover {
+            border-color: #e94560;
+            transform: translateX(5px);
+        }
+
+        .link-item .link-url {
+            color: #6fc3df;
+            text-decoration: none;
+            word-break: break-all;
+            flex: 1;
+            font-size: 14px;
+        }
+
+        .link-item .link-url:hover {
+            text-decoration: underline;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-html {
+            background: #e34f26;
+            color: #fff;
+        }
+        .badge-css {
+            background: #1572b6;
+            color: #fff;
+        }
+        .badge-js {
+            background: #f7df1e;
+            color: #333;
+        }
+        .badge-json {
+            background: #f39c12;
+            color: #fff;
+        }
+        .badge-image {
+            background: #ff6b6b;
+            color: #fff;
+        }
+        .badge-font {
+            background: #6c5ce7;
+            color: #fff;
+        }
+        .badge-other {
+            background: #636e72;
+            color: #fff;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #27ae60;
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.5s;
+            z-index: 9999;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.error {
+            background: #e74c3c;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            .input-group {
+                flex-direction: column;
+            }
+            .input-group input {
+                width: 100%;
+            }
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            .file-grid {
+                grid-template-columns: 1fr;
+            }
+            .options-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .tabs {
+                flex-direction: column;
+            }
+            .tab {
+                border-bottom: 2px solid #2a2a5e;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            header {
+                padding: 15px;
+            }
+            h1 {
+                font-size: 24px;
+            }
+            .container {
+                padding: 0;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e94560;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #c23152;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                🕷️ Web Scraper Pro
+                <span>v2.0</span>
+            </h1>
+            <p class="subtitle">Ambil semua data (HTML, CSS, JS, JSON, Images) dan lihat kode lengkapnya</p>
+        </header>
+
+        <div class="input-section">
+            <div class="input-group">
+                <input type="url" id="urlInput" placeholder="https://example.com" value="https://example.com">
+                <button class="btn btn-primary" id="scrapeBtn">🚀 Mulai Scraping</button>
+                <button class="btn btn-danger" id="clearBtn">🗑️ Clear</button>
+            </div>
+
+            <div class="options-grid">
+                <label><input type="checkbox" id="getHtml" checked> 🌐 HTML</label>
+                <label><input type="checkbox" id="getCss" checked> 🎨 CSS</label>
+                <label><input type="checkbox" id="getJs" checked> 📜 JavaScript</label>
+                <label><input type="checkbox" id="getJson" checked> 📊 JSON</label>
+                <label><input type="checkbox" id="getImages" checked> 🖼️ Images</label>
+                <label><input type="checkbox" id="getLinks" checked> 🔗 Links</label>
+                <label><input type="checkbox" id="getFonts" checked> 🔤 Fonts</label>
+                <label><input type="checkbox" id="getAll" checked> 📦 Semua</label>
+            </div>
+
+            <div class="status" id="status"></div>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-text" id="progressText">0%</div>
+            </div>
+        </div>
+
+        <div class="results" id="results">
+            <div class="stats-grid">
+                <div class="stat-card" onclick="switchTab('files')">
+                    <div class="number" id="totalFiles">0</div>
+                    <div class="label">📁 Total Files</div>
+                </div>
+                <div class="stat-card" onclick="switchTab('links')">
+                    <div class="number" id="totalLinks">0</div>
+                    <div class="label">🔗 Links</div>
+                </div>
+                <div class="stat-card" onclick="switchTab('images')">
+                    <div class="number" id="totalImages">0</div>
+                    <div class="label">🖼️ Images</div>
+                </div>
+                <div class="stat-card">
+                    <div class="number" id="totalSize">0 KB</div>
+                    <div class="label">💾 Total Size</div>
+                </div>
+                <div class="stat-card" onclick="switchTab('code')">
+                    <div class="number" id="totalCode">0</div>
+                    <div class="label">📄 Code Files</div>
+                </div>
+            </div>
+
+            <div class="tabs">
+                <button class="tab active" data-tab="files" onclick="switchTab('files')">📁 Semua File</button>
+                <button class="tab" data-tab="code" onclick="switchTab('code')">📄 Code</button>
+                <button class="tab" data-tab="images" onclick="switchTab('images')">🖼️ Images</button>
+                <button class="tab" data-tab="links" onclick="switchTab('links')">🔗 Links</button>
+                <button class="tab" data-tab="raw" onclick="switchTab('raw')">📊 Raw Data</button>
+            </div>
+
+            <div id="tabFiles" class="tab-content active">
+                <div class="file-grid" id="fileList">
+                    <div class="empty-state"><div class="icon">📂</div><p>Belum ada data</p></div>
+                </div>
+            </div>
+
+            <div id="tabCode" class="tab-content">
+                <div class="file-grid" id="codeList">
+                    <div class="empty-state"><div class="icon">📄</div><p>Belum ada code</p></div>
+                </div>
+            </div>
+
+            <div id="tabImages" class="tab-content">
+                <div class="file-grid" id="imageList">
+                    <div class="empty-state"><div class="icon">🖼️</div><p>Belum ada gambar</p></div>
+                </div>
+            </div>
+
+            <div id="tabLinks" class="tab-content">
+                <div id="linkList">
+                    <div class="empty-state"><div class="icon">🔗</div><p>Belum ada link</p></div>
+                </div>
+            </div>
+
+            <div id="tabRaw" class="tab-content">
+                <div style="display:flex;gap:10px;margin-bottom:15px;flex-wrap:wrap;">
+                    <button class="btn btn-success btn-sm" id="downloadJsonBtn">📥 Download JSON</button>
+                    <button class="btn btn-info btn-sm" id="copyAllBtn">📋 Copy All</button>
+                    <button class="btn btn-warning btn-sm" id="downloadAllBtn">📦 Download All Files</button>
+                </div>
+                <div style="background:#0a0a1a;border-radius:10px;padding:20px;max-height:600px;overflow-y:auto;">
+                    <pre id="rawData" style="color:#d4d4d4;font-family:'Consolas','Courier New',monospace;font-size:13px;line-height:1.6;white-space:pre-wrap;word-wrap:break-w        }
 
         .btn-danger:hover {
             background: #c0392b;
