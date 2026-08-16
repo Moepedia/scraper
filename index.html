@@ -1,118 +1,115 @@
 <!DOCTYPE html>
-<html lang="id">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Generate Acc AM Premium by Yuji</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <title>AM Premium Generator</title>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <input type="email" id="email" placeholder="Email">
+    <button id="sendBtn">Send</button>
+    <input type="text" id="magicLink" placeholder="Magic Link">
+    <button id="activateBtn">Aktivasi</button>
+    <div id="status"></div>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0a0a1a;
-            color: #e0e0e0;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+    <script>
+        // ============================================================
+        //  KONFIGURASI FIREBASE - GANTI DENGAN PUNYA KAMU
+        // ============================================================
+        const firebaseConfig = {
+  apiKey: "AIzaSyDsz6dA0kpWPxPsZnmjAXLiTqrddTkQXBY",
+  authDomain: "am-premium-clone.firebaseapp.com",
+  projectId: "am-premium-clone",
+  storageBucket: "am-premium-clone.firebasestorage.app",
+  messagingSenderId: "57429977863",
+  appId: "1:57429977863:web:8b320fa2e6b08403feb3a2"
+};
 
-        .container {
-            max-width: 600px;
-            width: 100%;
-            background: #16213e;
-            padding: 40px 30px;
-            border-radius: 20px;
-            border: 1px solid #2a2a5e;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-        }
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
 
-        h1 {
-            color: #e94560;
-            text-align: center;
-            font-size: 28px;
-            margin-bottom: 8px;
-        }
+        // ============================================================
+        //  FUNGSI SEND EMAIL VERIFICATION (MENGIRIM EMAIL REAL)
+        // ============================================================
+        document.getElementById('sendBtn').addEventListener('click', async function() {
+            const email = document.getElementById('email').value;
+            const status = document.getElementById('status');
 
-        .subtitle {
-            text-align: center;
-            color: #888;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
+            try {
+                status.textContent = '⏳ Mengirim email...';
 
-        .steps {
-            background: #0f3460;
-            padding: 20px;
-            border-radius: 12px;
-            margin-bottom: 25px;
-            border-left: 4px solid #e94560;
-        }
+                // 🔥 STEP 1: Buat akun user dulu (ini yang trigger Firebase kirim email)
+                const userCredential = await auth.createUserWithEmailAndPassword(email, 'password123');
+                const user = userCredential.user;
 
-        .steps h3 {
-            color: #fff;
-            margin-bottom: 12px;
-        }
+                // 🔥 STEP 2: Kirim email verifikasi
+                await user.sendEmailVerification();
 
-        .steps ol {
-            padding-left: 20px;
-            color: #bbb;
-        }
+                status.textContent = '✅ Email verifikasi terkirim ke ' + email + '! Cek Gmail 📬';
+                status.className = 'success';
 
-        .steps ol li {
-            margin: 8px 0;
-            line-height: 1.6;
-        }
+                // Simpan user untuk aktivasi nanti
+                window.pendingUser = user;
 
-        .steps ol li strong {
-            color: #e94560;
-        }
+            } catch (error) {
+                console.error(error);
+                if (error.code === 'auth/email-already-in-use') {
+                    // Email sudah terdaftar, kirim ulang verifikasi
+                    const user = await auth.signInWithEmailAndPassword(email, 'password123');
+                    await user.user.sendEmailVerification();
+                    status.textContent = '✅ Email verifikasi dikirim ulang!';
+                } else {
+                    status.textContent = '❌ Error: ' + error.message;
+                    status.className = 'error';
+                }
+            }
+        });
 
-        .form-group {
-            margin-bottom: 18px;
-        }
+        // ============================================================
+        //  FUNGSI AKTIVASI (Verifikasi Email)
+        // ============================================================
+        document.getElementById('activateBtn').addEventListener('click', async function() {
+            const status = document.getElementById('status');
 
-        .form-group label {
-            display: block;
-            color: #aaa;
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 6px;
-        }
+            try {
+                status.textContent = '⏳ Memproses aktivasi...';
 
-        .form-group input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 2px solid #2a2a5e;
-            background: #0a0a1a;
-            color: #fff;
-            font-size: 15px;
-            transition: border-color 0.3s;
-        }
+                // Reload user untuk cek status verifikasi terbaru
+                await auth.currentUser.reload();
+                const user = auth.currentUser;
 
-        .form-group input:focus {
-            outline: none;
-            border-color: #e94560;
-        }
+                if (user.emailVerified) {
+                    status.textContent = '✅ ✓ Berhasil! Akun AM Premium aktif! 🎉';
+                    status.className = 'success';
+                } else {
+                    status.textContent = '❌ Email belum diverifikasi. Cek email Anda!';
+                    status.className = 'error';
+                }
 
-        .btn-send,
-        .btn-activate {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 10px;
-            color: #fff;
+            } catch (error) {
+                status.textContent = '❌ Error: ' + error.message;
+                status.className = 'error';
+            }
+        });
+
+        // ============================================================
+        //  CEK STATUS USER SAAT LOAD
+        // ============================================================
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                console.log('User login:', user.email);
+                document.getElementById('email').value = user.email;
+                
+                if (user.emailVerified) {
+                    document.getElementById('status').textContent = '✅ Akun sudah terverifikasi!';
+                    document.getElementById('status').className = 'success';
+                }
+            }
+        });
+    </script>
+</body>
+</html>            color: #fff;
         }
 
         .btn-send {
